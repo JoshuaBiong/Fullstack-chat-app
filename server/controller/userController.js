@@ -2,7 +2,7 @@ const User = require("../model/userModel")
 const bcrypt = require("bcrypt")
 
 // REGISTER CONTROLLER
-module.exports.register = async(req, res, next) => {
+const registerController = async(req, res, next) => {
     try {
         const {
             username,
@@ -43,7 +43,7 @@ module.exports.register = async(req, res, next) => {
 }
 
 // LOGIN CONTROLLER
-module.exports.login = async(req, res, next) => {
+const loginController = async(req, res, next) => {
 
     try {
         const {
@@ -59,7 +59,7 @@ module.exports.login = async(req, res, next) => {
                 status: false
             });
         }
-        const ispasswordValid = bcrypt.compare(password, user.password)
+        const ispasswordValid = await bcrypt.compare(password, user.password)
         if (!ispasswordValid) {
             return res.json({
                 msg: "Incorrect password",
@@ -78,4 +78,24 @@ module.exports.login = async(req, res, next) => {
         next(error)
 
     }
+}
+
+
+// LOGOUT  WITHOUT COMING BACK TO THE PREVIOUS REGISTER OR SIGN IN PAGE WHEN SUCCESSFULLY LOGIN
+const logoutController = async(req, res) => {
+    try {
+        req.session.destroy()
+        res.redirect("/login")
+    } catch (error) {
+        console.log(error.message)
+    }
+
+}
+
+module.exports = {
+    loginController,
+    registerController,
+    logoutController
+
+
 }

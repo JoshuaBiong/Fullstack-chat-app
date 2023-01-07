@@ -25,6 +25,15 @@ const navigate = useNavigate();
 }
     // END OF VARIABLES
 
+useEffect(()=>{
+
+  if(localStorage.getItem("chat-app-user")){
+    navigate("/")
+  }
+},[])
+
+
+
     // FOMR SUBMIT HANDLER
     const handleSubmit= async (event)=>{
         event.preventDefault();
