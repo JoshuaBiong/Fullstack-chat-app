@@ -1,13 +1,16 @@
 import React ,{useState, useEffect} from 'react'
 import { ToastContainer,toast } from "react-toastify";
 import  styled from "styled-components";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css"
+import axios from "axios"
+import { registerRoute } from '../util/APIRoute';
 
 
 function Register() {
 
 // VARIABLES
+const navigate = useNavigate();
     const [values, setValues] = useState({
         username:"",
         email:"",
@@ -24,9 +27,22 @@ function Register() {
     // END OF VARIABLES
 
     // FOMR SUBMIT HANDLER
-const handleSubmit=(event)=>{
-    event.preventDefault();
-    handleValidation();
+    const handleSubmit= async (event)=>{
+        event.preventDefault();
+    if (handleValidation()){
+        const {username,password,email} = values;
+        const {data} = await axios.post(registerRoute,{
+            username,email,password  
+    });
+    if(data.status===false){
+        toast.error(data.msg, toastOptions)
+    }
+    if(data.status===true){ 
+        localStorage.setItem("chat-app-user",JSON.stringify(data.user))
+       navigate('/')
+    }
+
+}
 
 }
 
@@ -49,9 +65,11 @@ return false;
     toast.error("password must have more than  Character",toastOptions )
 return false;
  }
-    // END OF PASSWORD VALIDATION
 
+ return true
+    
 }
+// END OF PASSWORD VALIDATION
 
 const  handleChanges=(event)=>{
     setValues({...values,[event.target.name]:event.target.value})
