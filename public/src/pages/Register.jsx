@@ -7,13 +7,21 @@ import "react-toastify/dist/ReactToastify.css"
 
 function Register() {
 
-
+// VARIABLES
     const [values, setValues] = useState({
         username:"",
         email:"",
         password:"",
         confirmPassword:"",
     })
+
+    const toastOptions ={
+    position:'bottom-right',
+    autoClose: 5000,
+    pauseOnHover: true,
+    theme:"dark",
+}
+    // END OF VARIABLES
 
     // FOMR SUBMIT HANDLER
 const handleSubmit=(event)=>{
@@ -25,17 +33,23 @@ const handleSubmit=(event)=>{
 // FORM VALIDATION USING TOASTIFY 
 const handleValidation=()=>{
     const {username,password,confirmPassword,email} = values;
+
     // PASSWORD VALIDATION
     if(password!==confirmPassword){
-toast.error("password did not match", {
-    position:'bottom-right',
-    autoClose: 5000,
-    pauseOnHover: true,
-    theme:"dark",
-})
-    }
-    // END OF PASSWORD VALIDATION
+toast.error("password did not match",toastOptions )
+return false;
 
+ } else if(username.length<4){
+    toast.error("Username should > 4",toastOptions )
+return false;
+ }else if(email=="") {
+    toast.error("Email is required",toastOptions )
+return false;
+ }else if(password<5){
+    toast.error("password must have more than  Character",toastOptions )
+return false;
+ }
+    // END OF PASSWORD VALIDATION
 
 }
 
