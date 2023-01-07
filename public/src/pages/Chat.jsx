@@ -1,8 +1,12 @@
 import React from 'react'
-
+import { logoutRoute } from '../util/APIRoute'
 function Chat() {
   return (
-    <div>Chat</div>
+    <div>Chat
+
+        <a href="/register">logout</a>
+    </div>
+    
   )
 }
 

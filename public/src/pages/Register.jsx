@@ -1,13 +1,16 @@
 import React ,{useState, useEffect} from 'react'
 import { ToastContainer,toast } from "react-toastify";
 import  styled from "styled-components";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "react-toastify/dist/ReactToastify.css"
+import axios from "axios"
+import { registerRoute } from '../util/APIRoute';
 
 
 function Register() {
 
-
+// VARIABLES
+const navigate = useNavigate();
     const [values, setValues] = useState({
         username:"",
         email:"",
@@ -15,29 +18,66 @@ function Register() {
         confirmPassword:"",
     })
 
+    const toastOptions ={
+    position:'bottom-right',
+    autoClose: 4000,
+    pauseOnHover: true,
+    theme:"dark",
+}
+    // END OF VARIABLES
+
+
+useEffect(()=>{
+if(localStorage.getItem("chat-app-user")){
+    navigate("/")
+}
+},[])
+
+
     // FOMR SUBMIT HANDLER
-const handleSubmit=(event)=>{
-    event.preventDefault();
-    handleValidation();
+    const handleSubmit= async (event)=>{
+        event.preventDefault();
+    if (handleValidation()){
+        const {username,password,email} = values;
+        const {data} = await axios.post(registerRoute,{
+            username,email,password  
+    });
+    if(data.status===false){
+        toast.error(data.msg, toastOptions)
+    }
+    if(data.status===true){ 
+        localStorage.setItem("chat-app-user",JSON.stringify(data.user))
+       navigate('/')
+    }
+
+}
 
 }
 
 // FORM VALIDATION USING TOASTIFY 
 const handleValidation=()=>{
     const {username,password,confirmPassword,email} = values;
+
     // PASSWORD VALIDATION
     if(password!==confirmPassword){
-toast.error("password did not match", {
-    position:'bottom-right',
-    autoClose: 5000,
-    pauseOnHover: true,
-    theme:"dark",
-})
-    }
-    // END OF PASSWORD VALIDATION
+toast.error("password did not match",toastOptions )
+return false;
 
+ } else if(username.length<4){
+    toast.error("Username should > 4",toastOptions )
+return false;
+ }else if(email=="") {
+    toast.error("Email is required",toastOptions )
+return false;
+ }else if(password<5){
+    toast.error("password must have more than  Character",toastOptions )
+return false;
+ }
 
+ return true
+    
 }
+// END OF PASSWORD VALIDATION
 
 const  handleChanges=(event)=>{
     setValues({...values,[event.target.name]:event.target.value})
@@ -49,7 +89,7 @@ const  handleChanges=(event)=>{
     <form onSubmit={(event)=> handleSubmit(event)}>
         <div className="brand">
             <img src="" alt=""  />
-            <h1>Chatty</h1>
+            <h1>Register</h1>
         </div>
         {/* username */}
         <input type="text"  
