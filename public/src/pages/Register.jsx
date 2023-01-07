@@ -28,9 +28,10 @@ const navigate = useNavigate();
 
 
 useEffect(()=>{
-if(localStorage.getItem("chat-app-user")){
-    navigate("/")
-}
+    if(localStorage.getItem("chat-app-user")){
+        navigate("/")
+    }
+
 },[])
 
 
@@ -49,10 +50,7 @@ if(localStorage.getItem("chat-app-user")){
         localStorage.setItem("chat-app-user",JSON.stringify(data.user))
        navigate('/')
     }
-
-}
-
-}
+}}
 
 // FORM VALIDATION USING TOASTIFY 
 const handleValidation=()=>{
