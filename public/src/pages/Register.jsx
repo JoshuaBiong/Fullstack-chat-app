@@ -20,7 +20,7 @@ const navigate = useNavigate();
 
     const toastOptions ={
     position:'bottom-right',
-    autoClose: 5000,
+    autoClose: 4000,
     pauseOnHover: true,
     theme:"dark",
 }
@@ -81,7 +81,7 @@ const  handleChanges=(event)=>{
     <form onSubmit={(event)=> handleSubmit(event)}>
         <div className="brand">
             <img src="" alt=""  />
-            <h1>Chatty</h1>
+            <h1>Register</h1>
         </div>
         {/* username */}
         <input type="text"  

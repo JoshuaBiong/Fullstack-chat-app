@@ -1,9 +1,8 @@
 const User = require("../model/userModel")
 const bcrypt = require("bcrypt")
 
-
+// REGISTER CONTROLLER
 module.exports.register = async(req, res, next) => {
-
     try {
         const {
             username,
@@ -37,6 +36,42 @@ module.exports.register = async(req, res, next) => {
 
         delete user.password;
         return res.json({ status: true, user })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+// LOGIN CONTROLLER
+module.exports.login = async(req, res, next) => {
+
+    try {
+        const {
+            username,
+            password,
+        } = req.body;
+        const user = await User.findOne({
+            username
+        })
+        if (!user) {
+            return res.json({
+                msg: "Incorrect username",
+                status: false
+            });
+        }
+        const ispasswordValid = bcrypt.compare(password, user.password)
+        if (!ispasswordValid) {
+            return res.json({
+                msg: "Incorrect password",
+                status: false
+            });
+        }
+        delete user.password
+
+        return res.json({
+            status: true,
+            user
+        })
 
     } catch (error) {
 
