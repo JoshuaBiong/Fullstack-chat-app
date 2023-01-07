@@ -1,10 +1,16 @@
 import React from 'react'
-import { logoutRoute } from '../util/APIRoute'
+
+const logout=()=>{
+  localStorage.clear();
+ 
+  }
+    
+
+
 function Chat() {
   return (
     <div>Chat
-
-        <a href="/register">logout</a>
+<a href="/login" onClick={logout}>Logout</a>
     </div>
     
   )

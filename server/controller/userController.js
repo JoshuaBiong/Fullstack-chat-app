@@ -82,20 +82,20 @@ const loginController = async(req, res, next) => {
 
 
 // LOGOUT  WITHOUT COMING BACK TO THE PREVIOUS REGISTER OR SIGN IN PAGE WHEN SUCCESSFULLY LOGIN
-const logoutController = async(req, res) => {
-    try {
-        req.session.destroy()
-        res.redirect("/login")
-    } catch (error) {
-        console.log(error.message)
-    }
+// const logoutController = async(req, res) => {
+//     try {
+//         req.session.destroy()
+//         res.redirect("/login")
+//     } catch (error) {
+//         console.log(error.message)
+//     }
 
-}
+// }
 
 module.exports = {
     loginController,
     registerController,
-    logoutController
+    // logoutController
 
 
 }
